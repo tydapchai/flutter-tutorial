@@ -10,6 +10,7 @@ Future<String> fetchUserName(int id) async {
   await Future.delayed(Duration(seconds: 1));
 
   if (id == 0) throw Exception('ID không hợp lệ!');
+  print('⏳ Đã gọi API cho ID $id');
   return 'Nguyễn Văn $id';
 }
 

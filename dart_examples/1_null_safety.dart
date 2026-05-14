@@ -5,7 +5,7 @@
 void main() {
   // ── 1. Toán tử ? — Khai báo biến CÓ THỂ null ──────────────
   String? name;        // ? = biến này được phép là null
-  print(name);         // Output: null  (không crash!)
+  print(name?.length);         // Output: null  (không crash!)
 
   // Nếu không có ?, Dart sẽ BẮT BUỘC gán giá trị ngay:
   // String name2;     // ❌ LỖI compile-time: Must be initialized
