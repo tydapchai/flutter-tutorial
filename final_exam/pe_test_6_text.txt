@@ -1,0 +1,224 @@
+﻿FINAL PRACTICAL EXAM
+PRM393
+Duration
+90 Minutes
+Allowed Resources
+Students are allowed to use AI Tools:
+Objective
+This exam does NOT evaluate memorization of Flutter syntax.
+This exam evaluates:
+Software design skills
+AI-assisted development skills
+Code review skills
+Debugging skills
+System thinking
+Ability to understand and improve existing code
+Ability to explain technical decisions
+Students are free to use AI tools. However, students must be able to explain and justify their solutions.
+Scenario
+You are a Flutter Developer working for an online smartphone store.
+During development, the Product Owner continuously changes requirements.
+You must build features, adapt to requirement changes, review source code, and justify your technical decisions.
+PART A – SYSTEM DESIGN (15 POINTS)
+API Endpoint:
+https://dummyjson.com/products/category/smartphones
+Task A1 – Architecture Design
+Before writing any code, design the system architecture.
+Example:
+UI
+↓
+ViewModel
+↓
+Repository
+↓
+ApiService
+You may use any architecture pattern:
+MVVM
+Clean Architecture
+Repository Pattern
+Provider/Riverpod/BLoC
+Task A2 – Design Questions
+Answer the following questions:
+Why should API calls not be made directly inside Widgets?
+If the API URL changes tomorrow, which layer should be affected?
+If offline caching is required, where would you add it?
+If the backend changes from REST to GraphQL, how would your design help?
+Add your answer in this doc
+PART B – BUILDING THE MVP (20 POINTS)
+Build a Product List screen.
+Display:
+Product image
+Product name
+Product price
+Product rating
+Mandatory Requirements
+Skeleton Loading
+Pull-to-Refresh
+Error State
+Empty State
+Not Allowed
+Using CircularProgressIndicator as the primary loading solution.
+Screenshots your demo here
+PART C – CHANGE REQUESTS (15 POINTS)
+After completing the MVP, the Product Owner introduces the following changes.
+Change Request #1
+Display only products that are in stock.
+Screenshots your demo here
+Change Request #2
+If stock < 10, display a red warning label.
+Screenshots your demo here
+Change Request #3
+Allow users to enable/disable stock warnings.
+Screenshots your demo here
+Change Request #4
+Add product search functionality.
+Screenshots your demo here
+Change Request #5
+Implement a 500ms debounce for search.
+Screenshots your demo here
+Additional Analysis Questions
+Assume the application must handle:
+1,000,000 products.
+Answer:
+Is your current implementation still appropriate?
+Why or why not?
+Propose at least two alternative solutions.
+Add your answer in this doc
+PART D – FAVORITE FEATURE (OFFLINE + UI CLONE) (10 POINTS)
+Task Description
+Implement a 
+Favorite Screen
+ with the following requirements:
+Feature Requirements
+Users can 
+add/remove favorite products
+Favorites must be 
+stored offline
+ (local storage)
+Suggested: Hive / SharedPreferences / SQLite
+Favorite data must persist after app restart
+Must work 
+without internet connection
+UI Requirements (MANDATORY)
+You must build a UI 
+similar to the design below
+:
+Favorite Screen Includes:
+List of favorite products
+Product image
+Product name
+Price
+Remove (heart icon / delete button)
+Empty state (No favorites)
+IMPORTANT
+UI must be 
+visually similar (layout + spacing + structure)
+You are allowed to customize colors slightly
+You must 
+not change layout structure
+Task D1 – UI Implementation
+📸 Screenshot your Favorite Screen
+Screenshots your demo here
+Task D2 – Offline Strategy
+Answer:
+Where is favorite data stored?
+Why did you choose that solution?
+How does your architecture support offline-first?
+Add your answer in this doc
+Task D3 – Data Flow
+Explain:
+How data flows from UI → storage → UI
+How state is updated
+Add your answer in this doc
+PART E – DEBUGGING CHALLENGE (10 POINTS)
+Consider the following code:
+setState(() {
+products.where(
+(e) => e.stock > 0,
+);
+});
+Answer:
+Identify the bug.
+Explain why it happens.
+Provide a corrected version.
+How would you detect this issue during code review?
+Describe a test case that would reveal this bug.
+Add your answer in this doc
+PART F – OPEN-SOURCE PROJECT REVIEW (20 POINTS)
+Clone and analyze the following Flutter project:
+https://github.com/shahzaneer/MVVM-Arc
+x
+hitecture-Provider-in-Flutter
+Students may focus on one sample application inside the repository.
+Task F1 – Architecture Analysis
+Draw the architecture of the selected application.
+Task F2 – Technical Analysis
+Identify:
+State management approach
+API communication strategy
+Data management strategy
+Folder structure organization
+Task F3 – Strengths and Weaknesses
+List:
+3 strengths
+3 weaknesses
+Task F4 – Improvement Proposal
+Propose at least:
+3 improvements
+Task F5 – Engineering Evaluation
+Evaluate:
+Scalability
+Maintainability
+Testability
+Add your answer in this doc
+PART G – AI AUDIT REPORT (5 POINTS)
+Document your AI usage.
+Include:
+AI tools used
+Most important prompts
+Correct code generated by AI
+Incorrect code generated by AI
+How you corrected the AI output
+Estimated percentage of AI-generated code vs. self-written code
+Add your answer in this doc
+PART H – ORAL DEFENSE (5 POINTS)
+Students may be asked any of the following questions:
+When does FutureBuilder rebuild?
+Why use a Repository Pattern?
+What problem does debounce solve?
+How should timeout errors be handled?
+How would you design an Offline-First application?
+Why choose ListView.builder over Column?
+What happens when the number of items grows significantly?
+SUBMISSION REQUIREMENTS
+Submit a ZIP file using the following naming convention:
+StudentID_FullName.zip
+Folder Structure
+StudentID_FullName.zip
+|-- source_code/
+|-- docs/
+1. Source Code
+Folder:
+source_code/
+Include:
+Complete Flutter source code
+pubspec.yaml
+README.md
+2. docs
+Submit this file 
+Grading Rubric
+System Design .................. 15
+MVP Development ................ 20
+Change Requests .................15
+Debugging Challenge ............ 10
+Open-Source Project Review ..... 20
+AI Code Review ................. 10
+AI Audit Report ................. 5
+Oral Defense .................... 5
+TOTAL .......................... 100
+Important Notes
+AI tools are allowed without restriction.
+Students must be able to explain every submitted solution.
+Inability to explain submitted code may result in score deductions.
+Reports must reflect the student's own analysis and reasoning.
+The objective is not only to build software but also to evaluate, critique, and improve software engineering decisions.

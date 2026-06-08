@@ -357,6 +357,6 @@ void main() async {
   await exercise5();
 
   print('╔══════════════════════════════════════════════════════╗');
-  print('TAT CA 5 EXERCISES DA HOAN THANH!');
+  print('║         TAT CA 5 EXERCISES DA HOAN THANH!            ║');
   print('╚══════════════════════════════════════════════════════╝');
 }
