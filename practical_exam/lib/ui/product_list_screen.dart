@@ -153,24 +153,37 @@ class ProductListScreen extends StatelessWidget {
                   case ViewState.empty:
                     return _buildEmptyState();
                   case ViewState.success:
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        await viewModel.fetchProducts();
-                      },
-                      child: GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.55,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                        ),
-                        itemCount: viewModel.products.length,
-                        itemBuilder: (context, index) {
-                          return _buildProductCard(viewModel.products[index], viewModel.showStockWarnings);
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          await viewModel.fetchProducts();
                         },
-                      ),
-                    );
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            int crossAxisCount = 2;
+                            if (constraints.maxWidth > 1200) {
+                              crossAxisCount = 5;
+                            } else if (constraints.maxWidth > 800) {
+                              crossAxisCount = 4;
+                            } else if (constraints.maxWidth > 600) {
+                              crossAxisCount = 3;
+                            }
+                            
+                            return GridView.builder(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                childAspectRatio: 0.55,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                              ),
+                              itemCount: viewModel.products.length,
+                              itemBuilder: (context, index) {
+                                return _buildProductCard(viewModel.products[index], viewModel.showStockWarnings);
+                              },
+                            );
+                          }
+                        ),
+                      );
                 }
               },
             ),

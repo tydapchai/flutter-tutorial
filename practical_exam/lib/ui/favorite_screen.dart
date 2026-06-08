@@ -39,52 +39,72 @@ class FavoriteScreen extends StatelessWidget {
   Widget _buildEmptyState() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 160,
-              height: 160,
-              decoration: const BoxDecoration(
-                color: Color(0xFFE7EEFF),
-                shape: BoxShape.circle,
-              ),
-              child: const Center(
-                child: Icon(Icons.shopping_bag_outlined, size: 80, color: Color(0xFF004AC6)),
-              ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 250,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFE7EEFF).withValues(alpha: 0.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFE7EEFF).withValues(alpha: 0.5),
+                        blurRadius: 50,
+                        spreadRadius: 20,
+                      )
+                    ],
+                  ),
+                ),
+                Image.network(
+                  'https://lh3.googleusercontent.com/aida-public/AB6AXuDlTTmpPw1nSdIB617uHHByOGb3ffhcotcF2ZK02raGAhBIDwJPVCuVokqfNfWHbsoesZs3jSGRreiRg1RKr-iPK5A3J6h3TSb1fCIAc_0qSNwNN6yjrIoIMMGepVOerMpXMUwATnkcPBrv9j49ARLydRzG6S1ZefSnRZ3HOTTNwksNZWnvc0RNsNN8xo8iC_P9jpJyCkSBDbXZ77pfm6VGkFxqorhYA_6UWAIwkv80iuuNwgU6Fnh8YOyLJFwXhG5z3y4DrkCd',
+                  width: 256,
+                  height: 256,
+                  fit: BoxFit.contain,
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             const Text(
               'Chưa có sản phẩm yêu thích',
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
                 color: Color(0xFF111C2D),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             const Text(
-              'Hãy bắt đầu khám phá và lưu lại những món đồ tuyệt vời mà bạn yêu thích nhé!',
+              'Hãy bắt đầu khám phá và lưu lại những món đồ tuyệt vời mà bạn yêu thích nhất.',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 color: Color(0xFF434655),
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2563EB),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.shopping_bag, color: Colors.white),
+                label: const Text('Tiếp tục mua sắm', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF004AC6),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 2,
                 ),
               ),
-              child: const Text('Tiếp tục mua sắm', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -93,22 +113,73 @@ class FavoriteScreen extends StatelessWidget {
   }
 
   Widget _buildGrid(List<Product> favorites) {
-    return RefreshIndicator(
-      onRefresh: () async {},
-      child: GridView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.55,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${favorites.length} sản phẩm đã lưu',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF434655),
+                ),
+              ),
+              InkWell(
+                onTap: () {},
+                child: const Row(
+                  children: [
+                    Icon(Icons.filter_list, size: 16, color: Color(0xFF004AC6)),
+                    SizedBox(width: 4),
+                    Text(
+                      'Lọc',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF004AC6),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-        itemCount: favorites.length,
-        itemBuilder: (context, index) {
-          final product = favorites[index];
-          return _buildFavoriteCard(context, product);
-        },
-      ),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () async {},
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                int crossAxisCount = 2;
+                if (constraints.maxWidth > 1200) {
+                  crossAxisCount = 5;
+                } else if (constraints.maxWidth > 800) {
+                  crossAxisCount = 4;
+                } else if (constraints.maxWidth > 600) {
+                  crossAxisCount = 3;
+                }
+                
+                return GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: 0.55,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                  ),
+                  itemCount: favorites.length,
+                  itemBuilder: (context, index) {
+                    final product = favorites[index];
+                    return _buildFavoriteCard(context, product);
+                  },
+                );
+              }
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -214,14 +285,14 @@ class FavoriteScreen extends StatelessWidget {
                     const Icon(Icons.star, color: Colors.amber, size: 14),
                     const SizedBox(width: 4),
                     Text(
-                      '\${product.rating}',
+                      '${product.rating}',
                       style: const TextStyle(color: Color(0xFF434655), fontSize: 12),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '\$\${product.price}',
+                  '\$${product.price}',
                   style: const TextStyle(
                     color: Color(0xFF004AC6),
                     fontSize: 18,
