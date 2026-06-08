@@ -25,4 +25,15 @@ class Product {
       stock: json['stock'] as int,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'rating': rating,
+      'thumbnail': thumbnail,
+      'stock': stock,
+    };
+  }
 }

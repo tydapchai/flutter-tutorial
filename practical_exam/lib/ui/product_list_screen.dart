@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
 import '../viewmodel/product_viewmodel.dart';
+import '../viewmodel/favorite_viewmodel.dart';
 import '../model/product.dart';
 
 class ProductListScreen extends StatelessWidget {
@@ -227,13 +227,34 @@ class ProductListScreen extends StatelessWidget {
               Positioned(
                 top: 8,
                 right: 8,
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.favorite_border, size: 18, color: Color(0xFF737686)),
+                child: Consumer<FavoriteViewModel>(
+                  builder: (context, favoriteVM, child) {
+                    final isFav = favoriteVM.isFavorite(product.id);
+                    return GestureDetector(
+                      onTap: () {
+                        favoriteVM.toggleFavorite(product);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            )
+                          ],
+                        ),
+                        child: Icon(
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                          size: 20,
+                          color: isFav ? const Color(0xFFAB0B1C) : const Color(0xFF737686),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               // Warning Badge (Top Left)

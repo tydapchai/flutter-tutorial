@@ -43,9 +43,14 @@ class ProductViewModel extends ChangeNotifier {
   }
 
   void searchProducts(String query) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    debugPrint('⌨️ [TYPING] Người dùng vừa gõ: "\$query"');
+    if (_debounce?.isActive ?? false) {
+      debugPrint('⏳ [CANCEL] Hủy lệnh lọc cũ vì người dùng gõ phím mới...');
+      _debounce!.cancel();
+    }
+    
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      debugPrint('🔍 [DEBOUNCE DEMO] Đang lọc dữ liệu cho từ khóa: "\$query"');
+      debugPrint('✅ [DEBOUNCE SUCCESS] Đã chờ đủ 500ms. Tiến hành lọc dữ liệu cho: "\$query"');
       _searchQuery = query;
       _applyFilters();
     });
