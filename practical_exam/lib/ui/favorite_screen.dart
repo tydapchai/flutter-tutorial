@@ -113,73 +113,131 @@ class FavoriteScreen extends StatelessWidget {
   }
 
   Widget _buildGrid(List<Product> favorites) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${favorites.length} sản phẩm đã lưu',
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF434655),
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: const Row(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTablet = constraints.maxWidth > 768;
+        return Column(
+          children: [
+            if (isTablet)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Icon(Icons.filter_list, size: 16, color: Color(0xFF004AC6)),
-                    SizedBox(width: 4),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'CỦA BẠN',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            color: Color(0xFF004AC6),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Danh sách yêu thích',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF111C2D),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Bạn có ${favorites.length} sản phẩm đã lưu trong danh sách.',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF5A5F62),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.sort, size: 20),
+                          label: const Text('Mới nhất'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFF111C2D),
+                            side: const BorderSide(color: Color(0xFFC3C6D7)),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.shopping_cart, size: 20),
+                          label: const Text('Mua tất cả'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF004AC6),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Text(
-                      'Lọc',
-                      style: TextStyle(
+                      '${favorites.length} sản phẩm đã lưu',
+                      style: const TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF004AC6),
-                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF434655),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: const Row(
+                        children: [
+                          Icon(Icons.filter_list, size: 16, color: Color(0xFF004AC6)),
+                          SizedBox(width: 4),
+                          Text(
+                            'Lọc',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF004AC6),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: RefreshIndicator(
-            onRefresh: () async {},
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                int crossAxisCount = 2;
-                if (constraints.maxWidth > 1200) {
-                  crossAxisCount = 5;
-                } else if (constraints.maxWidth > 800) {
-                  crossAxisCount = 4;
-                } else if (constraints.maxWidth > 600) {
-                  crossAxisCount = 3;
-                }
-                
-                return GridView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    childAspectRatio: 0.55,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                  ),
+            Expanded(
+              child: GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: isTablet ? 24.0 : 16.0, vertical: 8.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isTablet ? 4 : 2,
+                  childAspectRatio: isTablet ? 0.52 : 0.55,
+                  crossAxisSpacing: isTablet ? 24 : 12,
+                  mainAxisSpacing: isTablet ? 24 : 12,
+                ),
                   itemCount: favorites.length,
                   itemBuilder: (context, index) {
                     final product = favorites[index];
                     return _buildFavoriteCard(context, product);
                   },
-                );
-              }
+                ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      }
     );
   }
 
@@ -253,53 +311,55 @@ class FavoriteScreen extends StatelessWidget {
             ),
           ),
           // Info Box
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Smartphone',
-                  style: TextStyle(
-                    color: Color(0xFF004AC6),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  product.title,
-                  style: const TextStyle(
-                    color: Color(0xFF111C2D),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 14),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${product.rating}',
-                      style: const TextStyle(color: Color(0xFF434655), fontSize: 12),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Smartphone',
+                    style: TextStyle(
+                      color: Color(0xFF004AC6),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '\$${product.price}',
-                  style: const TextStyle(
-                    color: Color(0xFF004AC6),
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 2),
+                  Text(
+                    product.title,
+                    style: const TextStyle(
+                      color: Color(0xFF111C2D),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.amber, size: 14),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${product.rating}',
+                        style: const TextStyle(color: Color(0xFF434655), fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Text(
+                    '\$${product.price}',
+                    style: const TextStyle(
+                      color: Color(0xFF004AC6),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

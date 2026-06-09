@@ -171,8 +171,8 @@ class ProductListScreen extends StatelessWidget {
                             return GridView.builder(
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: crossAxisCount,
-                                childAspectRatio: 0.55,
+                                crossAxisCount: constraints.maxWidth > 768 ? 4 : 2,
+                                childAspectRatio: constraints.maxWidth > 768 ? 0.52 : 0.55,
                                 crossAxisSpacing: 16,
                                 mainAxisSpacing: 16,
                               ),
@@ -222,20 +222,20 @@ class ProductListScreen extends StatelessWidget {
                     color: Color(0xFFF0F3FF),
                     borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                   ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                    child: Image.network(
-                      product.thumbnail,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, color: Colors.grey),
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(color: const Color(0xFFF0F3FF));
-                      },
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                      child: Image.network(
+                        product.thumbnail,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, color: Colors.grey),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(color: const Color(0xFFF0F3FF));
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
               // Favorite Button (Top Right)
               Positioned(
                 top: 8,
@@ -287,8 +287,8 @@ class ProductListScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-            ],
-          ),
+              ],
+            ),
           
           // Details Area
           Expanded(
